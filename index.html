@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+        <link rel="icon" href="assets/شعار.png" type="image/png">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ضيافة العزم | المنيو الحديث</title>
@@ -307,31 +309,54 @@
 
         function copyIt(v) { navigator.clipboard.writeText(v).then(() => pushNotif("تم النسخ للحافظة")); }
 
-        function sendOrder() {
-            const keys = Object.keys(cart);
-            if (!keys.length) return pushNotif("يرجى اختيار أصناف أولاً");
-            const uName = document.getElementById('user-name').value;
-            if (!uName) return pushNotif("يرجى كتابة اسمك");
+function sendOrder() {
+    const itemsInCart = Object.keys(cart);
+    if (!itemsInCart.length) return showNotify("القائمة فارغة!");
+    
+    const uName = document.getElementById('user-name').value;
+    if (!uName) return showNotify("يرجى إدخال الاسم");
 
-            let message = `*طلب جديد وصل بكل حب من ضيافة العزم* ✨\n\n`;
-            message += `👤 *الاسم:* ${uName}\n`;
-            
-            const sections = [
-                { title: "\n🥪 *الأطباق المالحة:*\n", list: keys.filter(k => categories.salty.includes(k)) },
-                { title: "\n🍯 *الأطباق الحلوة:*\n", list: keys.filter(k => categories.sweet.includes(k)) },
-                { title: "\n☕ *المشروبات:*\n", list: keys.filter(k => categories.drinks.includes(k)) }
-            ];
+    // بداية نص الرسالة
+    let msg = "طلب جديد من ضيافة العزم\n";
+    msg += "الاسم: " + uName + "\n";
+    msg += "تفاصيل الطلب:\n";
 
-            sections.forEach(s => {
-                if (s.list.length) {
-                    message += s.title;
-                    s.list.forEach((k, i) => message += `  ${i+1}. ${k} (العدد: ${cart[k]})\n`);
-                }
-            });
+    // تصفية العناصر حسب كل قسم
+    const saltyOrder = itemsInCart.filter(k => categories.salty.includes(k));
+    const sweetOrder = itemsInCart.filter(k => categories.sweet.includes(k));
+    const drinkOrder = itemsInCart.filter(k => categories.drinks.includes(k));
 
-            message += `\n💖 *نتمنى لكم وقتاً ممتعاً وبالهناء والشفاء!*`;
-            window.open(`https://wa.me/966502069445?text=${encodeURIComponent(message)}`);
-        }
+    // إضافة الأطباق المالحة إذا وجدت
+    if (saltyOrder.length > 0) {
+        msg += "\nالاطباق المالحة:\n";
+        saltyOrder.forEach((k, i) => {
+            msg += (i + 1) + ". " + k + " (العدد: " + cart[k] + ")\n";
+        });
+    }
+
+    // إضافة الأطباق الحلوة إذا وجدت
+    if (sweetOrder.length > 0) {
+        msg += "\nالاطباق الحلوة:\n";
+        sweetOrder.forEach((k, i) => {
+            msg += (i + 1) + ". " + k + " (العدد: " + cart[k] + ")\n";
+        });
+    }
+
+    // إضافة المشروبات إذا وجدت
+    if (drinkOrder.length > 0) {
+        msg += "\nالمشروبات:\n";
+        drinkOrder.forEach((k, i) => {
+            msg += (i + 1) + ". " + k + " (العدد: " + cart[k] + ")\n";
+        });
+    }
+
+    // خاتمة الرسالة
+    msg += "\nشكرا لكم وطاب يومكم.";
+
+    // فتح رابط الواتساب
+    const whatsappURL = "https://wa.me/966502069445?text=" + encodeURIComponent(msg);
+    window.open(whatsappURL, '_blank');
+}
 
         // السلايدر - تم إصلاح الحركة لتظهر الصور 1، 2، 3 بالترتيب
         let sIdx = 0;
