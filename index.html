@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-        <link rel="icon" href="assets/شعار.png" type="image/png">
-
+    <link rel="icon" href="assets/شعار.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ضيافة العزم | المنيو الحديث</title>
-    <!-- استيراد خط المراعي -->
+    <title>منيو أسرة ضيافة العزم</title>
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,246 +20,170 @@
         html { scroll-behavior: smooth; }
         body { font-family: 'Almarai', sans-serif; background-color: var(--light-bg); color: var(--dark); overflow-x: hidden; }
 
-        /* شريط التنقل الثابت (Sticky) */
-        nav {
-            background-color: var(--dark);
-            padding: 12px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 2000;
-            border-bottom: 3px solid var(--gold);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .nav-logo img { height: clamp(50px, 10vw, 80px); width: auto; }
-        .nav-links { display: flex; gap: 10px; }
-        .nav-links a {
-            color: var(--gold);
-            text-decoration: none;
-            font-weight: 700;
-            padding: 8px 15px;
-            border-radius: 5px;
-            border: 1px solid var(--gold);
-            transition: 0.3s;
-            font-size: 0.9rem;
-        }
-        .nav-links a:hover { background: var(--gold); color: var(--dark); }
-
-        /* السلايدر - يملأ العرض بالكامل */
-        .slider-section {
-            width: 100%;
-            height: clamp(250px, 50vh, 500px);
-            background-color: #000;
-            position: relative;
-            overflow: hidden;
-        }
-        .slides-wrapper {
-            display: flex;
-            width: 300%;
-            height: 100%;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            direction: ltr; /* لضمان صحة حركة الصور من 1 لـ 3 */
-        }
-        .slide {
-            width: 33.333%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* حاوية التنبيهات */
-        #notif-box {
-            position: fixed; top: 100px; left: 20px; z-index: 3000;
+        /* حاوية التنبيهات داخل الصفحة */
+        #notification-container {
+            position: fixed; top: 100px; left: 20px; z-index: 9999;
             display: flex; flex-direction: column; gap: 10px;
         }
         .notif {
             background: var(--dark); color: var(--gold);
-            padding: 12px 25px; border-radius: 8px; border-right: 5px solid var(--gold);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            animation: slideIn 0.4s forwards;
+            padding: 15px 25px; border-radius: 8px; border-right: 5px solid var(--gold);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: slideIn 0.4s forwards;
+            font-size: 0.9rem; min-width: 200px;
         }
         @keyframes slideIn { from { transform: translateX(-120%); } to { transform: translateX(0); } }
 
-        /* التنسيق الرئيسي - القائمة يسار والمنيو يمين */
-        .layout {
-            display: flex;
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 20px;
-            gap: 30px;
+        /* شريط التنقل */
+        nav {
+            background-color: var(--dark); padding: 15px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 2000; border-bottom: 3px solid var(--gold);
         }
+        .nav-title { color: var(--gold); font-size: 1.5rem; font-weight: 800; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-links a {
+            color: var(--gold); text-decoration: none; font-weight: 700;
+            padding: 8px 15px; border-radius: 5px; border: 1px solid var(--gold);
+            transition: 0.3s; font-size: 0.9rem;
+        }
+        .nav-links a:hover { background: var(--gold); color: var(--dark); }
 
-        /* القائمة في اليسار (Sticky Sidebar) */
-        .sidebar {
-            flex: 1;
-            background: var(--white);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            height: fit-content;
-            position: sticky;
-            top: 110px; /* تتحرك مع الشاشة */
-            border-top: 6px solid var(--gold);
+        /* البانر المقسم (1/4 شعار - 3/4 صور) */
+        .slider-section {
+            width: 100%; height: clamp(200px, 40vh, 450px);
+            background-color: #000; overflow: hidden; position: relative;
         }
-        .sidebar h2 { text-align: center; margin-bottom: 20px; font-size: 1.4rem; }
+        .slides-wrapper { display: flex; width: 300%; height: 100%; transition: transform 0.8s ease-in-out; }
+        .slide-unit { width: 33.333%; height: 100%; display: flex; }
+        .logo-box {
+            width: 25%; height: 100%; background-color: var(--dark);
+            display: flex; align-items: center; justify-content: center; border-left: 2px solid var(--gold);
+        }
+        .logo-box img { max-width: 80%; max-height: 80%; object-fit: contain; }
+        .image-box { width: 75%; height: 100%; background-size: cover; background-position: center; }
 
-        .cart-list { list-style: none; margin-bottom: 20px; }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .item-info { font-weight: 800; font-size: 0.95rem; flex: 1; }
-        .item-controls { display: flex; align-items: center; gap: 10px; }
-        .qty-btn {
-            width: 30px; height: 30px; border-radius: 6px; border: 1px solid #ddd;
-            background: #fff; cursor: pointer; font-weight: bold; font-size: 1.2rem;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .qty-btn:hover { border-color: var(--gold); color: var(--gold); }
-        .qty-num { font-weight: 800; min-width: 20px; text-align: center; }
-        .btn-del { color: var(--danger); background: none; border: none; cursor: pointer; font-weight: bold; font-size: 0.8rem; margin-right: 10px; }
-
-        .input-user {
-            width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #eee;
-            margin-bottom: 15px; font-family: inherit; font-size: 1rem;
-        }
-        .btn-send {
-            width: 100%; padding: 16px; background: var(--whatsapp); color: white;
-            border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer;
-            transition: 0.3s;
-        }
-        .btn-send:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4); }
-
-        /* المنيو في اليمين */
-        .menu-area { flex: 2.5; display: flex; flex-direction: column; gap: 40px; }
-        .cat-card { background: var(--white); border-radius: 20px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .cat-title { border-right: 6px solid var(--gold); padding-right: 15px; margin-bottom: 25px; font-size: 1.6rem; }
-
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 20px;
-        }
-        .item-box {
-            background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 15px;
-            text-align: center; transition: 0.3s;
-        }
+        /* المحتوى الرئيسي */
+        .main-layout { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .cat-card { background: var(--white); border-radius: 20px; padding: 25px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .cat-title { border-right: 6px solid var(--gold); padding-right: 15px; margin-bottom: 25px; font-size: 1.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+        .item-box { background: #fff; border: 1px solid #eee; padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; }
         .item-box:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .btn-add {
-            background: var(--gold); border: none; padding: 10px; border-radius: 50px;
-            font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; font-family: inherit;
-        }
+        .btn-add { background: var(--gold); border: none; padding: 10px; border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; font-family: inherit; }
 
-        /* الفوتر */
-        footer { background: var(--dark); color: white; padding: 50px 20px; text-align: center; margin-top: 60px; }
-        .footer-contacts { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
-        .contact-pill {
-            background: #444; border: 1px solid var(--gold); padding: 10px 20px; border-radius: 10px;
-            display: flex; align-items: center; gap: 10px;
+        /* القائمة في الأسفل */
+        .bottom-cart {
+            background: var(--white); border-radius: 20px; padding: 30px;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.1); margin-top: 50px; border-top: 5px solid var(--gold);
         }
-        .copy-trigger {
-            background: var(--gold); color: var(--dark); border: none; padding: 5px 12px;
-            border-radius: 5px; cursor: pointer; font-size: 0.8rem; font-weight: bold;
-        }
+        .bottom-cart h2 { text-align: center; margin-bottom: 20px; }
+        .cart-list { list-style: none; max-width: 800px; margin: 0 auto 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .item-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { width: 32px; height: 32px; border-radius: 6px; border: 1px solid #ddd; background: #fff; cursor: pointer; font-weight: bold; font-size: 1.2rem; }
+        .qty-val { font-weight: 800; min-width: 25px; text-align: center; }
+        .btn-del { color: var(--danger); background: none; border: none; cursor: pointer; font-weight: bold; margin-right: 10px; }
 
-        #btn-up {
-            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
-            background: var(--dark); color: var(--gold); border: 2px solid var(--gold);
-            border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 1000; font-weight: bold;
-        }
+        .input-group { max-width: 500px; margin: 0 auto; }
+        .input-user { width: 100%; padding: 15px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 15px; font-family: inherit; font-size: 1rem; }
+        .btn-send { width: 100%; padding: 16px; background: var(--whatsapp); color: white; border: none; border-radius: 12px; font-weight: bold; font-size: 1.1rem; cursor: pointer; }
 
-        @media (max-width: 900px) {
-            .layout { flex-direction: column-reverse; }
-            .sidebar { position: static; width: 100%; order: 2; }
-            .menu-area { order: 1; }
-            .slider-section { height: 250px; }
-            .nav-links { display: flex; gap: 5px; }
-            .nav-links a { padding: 6px 10px; font-size: 0.7rem; }
+        footer { background: var(--dark); color: white; padding: 40px 20px; text-align: center; margin-top: 50px; }
+        .copy-pill { background: #444; border: 1px solid var(--gold); padding: 8px 15px; border-radius: 8px; cursor: pointer; color: var(--gold); font-size: 0.8rem; margin: 5px; display: inline-block; }
+
+        #btn-up { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--dark); color: var(--gold); border: 2px solid var(--gold); border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 1000; }
+
+        @media (max-width: 768px) {
+            .slide-unit { flex-direction: column; }
+            .logo-box { width: 100%; height: 30%; border-left: none; border-bottom: 2px solid var(--gold); }
+            .image-box { width: 100%; height: 70%; }
         }
     </style>
 </head>
 <body>
 
+    <div id="notification-container"></div>
     <button id="btn-up" onclick="window.scrollTo(0,0)">↑</button>
-    <div id="notif-box"></div>
 
     <nav>
-        <div class="nav-logo">
-            <img src="assets/شعار.png" alt="شعار ضيافة العزم">
-        </div>
+        <div class="nav-title">أسرة ضيافة العزم</div>
         <div class="nav-links">
-            <a href="#salty-sec">الأطباق المالحة</a>
-            <a href="#sweet-sec">الأطباق الحلوة</a>
+            <a href="#salty-sec">المالحة</a>
+            <a href="#sweet-sec">الحلوة</a>
             <a href="#drink-sec">المشروبات</a>
         </div>
     </nav>
 
     <section class="slider-section">
         <div class="slides-wrapper" id="main-slider">
-            <div class="slide" style="background-image: url('assets/1.png');"></div>
-            <div class="slide" style="background-image: url('assets/2.png');"></div>
-            <div class="slide" style="background-image: url('assets/3.png');"></div>
+            <div class="slide-unit">
+                <div class="logo-box"><img src="assets/شعار.png" alt="logo"></div>
+                <div class="image-box" style="background-image: url('assets/1.png');"></div>
+            </div>
+            <div class="slide-unit">
+                <div class="logo-box"><img src="assets/شعار 1.png" alt="logo"></div>
+                <div class="image-box" style="background-image: url('assets/2.png');"></div>
+            </div>
+            <div class="slide-unit">
+                <div class="logo-box"><img src="assets/شعار.png" alt="logo"></div>
+                <div class="image-box" style="background-image: url('assets/3.png');"></div>
+            </div>
         </div>
     </section>
 
-    <div class="layout">
-        <!-- القائمة - جهة اليسار -->
-        <aside class="sidebar">
-            <h2>قائمة طلباتك</h2>
+    <div class="main-layout">
+        <div id="salty-sec" class="cat-card">
+            <h2 class="cat-title">الأطباق المالحة</h2>
+            <div class="grid" id="salty-grid"></div>
+        </div>
+
+        <div id="sweet-sec" class="cat-card">
+            <h2 class="cat-title">الأطباق الحلوة</h2>
+            <div class="grid" id="sweet-grid"></div>
+        </div>
+
+        <div id="drink-sec" class="cat-card">
+            <h2 class="cat-title">المشروبات</h2>
+            <div class="grid" id="drink-grid"></div>
+        </div>
+
+        <div class="bottom-cart">
+            <h2>قائمة طلباتك المختارة</h2>
             <ul id="cart-list" class="cart-list">
-                <li style="border:none; color:#aaa; text-align:center; padding:30px;">القائمة فارغة حالياً</li>
+                <li style="border:none; color:#aaa; text-align:center; padding:20px;">القائمة فارغة</li>
             </ul>
-            <input type="text" id="user-name" class="input-user" placeholder="ادخل اسمك هنا">
-            <button class="btn-send" onclick="sendOrder()">تأكيد وإرسال عبر واتساب</button>
-        </aside>
-
-        <!-- المنيو - جهة اليمين -->
-        <main class="menu-area">
-            <div id="salty-sec" class="cat-card">
-                <h2 class="cat-title">الأطباق المالحة</h2>
-                <div class="items-grid" id="salty-grid"></div>
+            <div class="input-group">
+                <input type="text" id="user-name" class="input-user" placeholder="ادخل اسمك هنا">
+                <button class="btn-send" onclick="sendOrder()">تأكيد وإرسال عبر واتساب</button>
             </div>
-
-            <div id="sweet-sec" class="cat-card">
-                <h2 class="cat-title">الأطباق الحلوة</h2>
-                <div class="items-grid" id="sweet-grid"></div>
-            </div>
-
-            <div id="drink-sec" class="cat-card">
-                <h2 class="cat-title">المشروبات</h2>
-                <div class="items-grid" id="drink-grid"></div>
-            </div>
-        </main>
+        </div>
     </div>
 
     <footer>
-        <div class="footer-contacts">
-            <div class="contact-pill">
-                جوال: 0502069445
-                <button class="copy-trigger" onclick="copyIt('0502069445')">نسخ</button>
-            </div>
-            <div class="contact-pill">
-                البريد: abdelwhabhany62@gmail.com
-                <button class="copy-trigger" onclick="copyIt('abdelwhabhany62@gmail.com')">نسخ</button>
-            </div>
+        <div>
+            <div class="copy-pill" onclick="copy('0502069445')">جوال: 0502069445 (نسخ)</div>
+            <div class="copy-pill" onclick="copy('abdelwhabhany62@gmail.com')">البريد الإلكتروني (نسخ)</div>
         </div>
-        <p>جميع الحقوق محفوظة لضيافة العزم &copy; 2024</p>
+        <p style="margin-top: 15px;">جميع الحقوق محفوظة لأسرة ضيافة العزم &copy; 2026</p>
     </footer>
 
     <script>
         const categories = {
-            salty: ["فطائر لبنة", "سمبوسة جبن", "سمبوسة لحم", "ميني بيتزا", "ورق عنب", "كبة", "أصابع موزاريلا", "مناقيش زعتر", "سبرنغ رولز", "فطائر عكاوي", "ميني برجر", "كرواسون جبن", "فطائر سبانخ", "سندوتش تونة", "فلافل", "خلية نحل", "بيتزا بيبيروني", "فطائر ميني", "توست دجاج", "فطائر نقانق", "ميني شاورما", "بطاطس ودجز", "فطائر قشقوان", "رولات مسخن", "ساندوتش بيض"],
-            sweet: ["بسبوسة قشطة", "لقيمات عسل", "تمر سكري", "كيكة زعفران", "حلا لندن", "سينامون رولز", "بان كيك", "كوكيز", "قطايف", "رز بلبن", "أم علي", "كيكة عسل", "براونيز", "حلا لاتيه", "غريبة", "معمول تمر", "تارت فواكه", "كيكة تمر", "بقلاوة فستق", "دونات", "وافل نوتيلا", "حلا أوريو", "جيلي", "كريم كراميل", "تشيز كيك"],
-            drinks: ["قهوة عربية", "شاي أحمر", "شاي نعناع", "زنجبيل بالحليب", "عصير برتقال", "ليمون بالنعناع", "كابتشينو", "هوت شوكليت", "سحلب", "ماء بارد"]
+            salty: ["فطائر لبنة", "سمبوسة جبن", "سمبوسة لحم", "ميني بيتزا", "ورق عنب", "كبة برغل", "أصابع موزاريلا", "مناقيش زعتر", "سبرنغ رولز", "فطائر عكاوي"],
+            sweet: ["بسبوسة قشطة", "لقيمات عسل", "تمر سكري", "كيكة زعفران", "حلا لندن", "سينامون رولز", "بان كيك", "كوكيز", "قطايف", "رز بلبن"],
+            drinks: ["قهوة عربية", "شاي أحمر", "عصير برتقال", "ليمون بالنعناع", "ماء بارد"]
         };
 
         let cart = {};
+
+        function showNotify(msg) {
+            const container = document.getElementById('notification-container');
+            const notify = document.createElement('div');
+            notify.className = 'notif';
+            notify.innerText = msg;
+            container.appendChild(notify);
+            setTimeout(() => { notify.remove(); }, 3000);
+        }
 
         function render(items, id) {
             const el = document.getElementById(id);
@@ -276,93 +198,83 @@
         render(categories.sweet, 'sweet-grid');
         render(categories.drinks, 'drink-grid');
 
-        function pushNotif(msg) {
-            const container = document.getElementById('notif-box');
-            const n = document.createElement('div');
-            n.className = 'notif'; n.innerText = msg;
-            container.appendChild(n); setTimeout(() => n.remove(), 3000);
+        function add(n) { 
+            cart[n] = (cart[n] || 0) + 1; 
+            updateUI(); 
+            showNotify(`تمت إضافة ${n} للقائمة`);
         }
-
-        function add(n) { cart[n] = (cart[n] || 0) + 1; updateUI(); pushNotif("تمت الإضافة بنجاح"); }
         function changeQty(n, a) { if(cart[n]){ cart[n]+=a; if(cart[n]<=0) delete cart[n]; updateUI(); } }
-        function removeAll(n) { delete cart[n]; updateUI(); }
+        function del(n) { delete cart[n]; updateUI(); showNotify(`تم حذف ${n}`); }
 
         function updateUI() {
             const list = document.getElementById('cart-list');
             const keys = Object.keys(cart);
-            list.innerHTML = keys.length ? '' : '<li style="border:none; color:#aaa; text-align:center; padding:30px;">القائمة فارغة حالياً</li>';
+            list.innerHTML = keys.length ? '' : '<li style="border:none; color:#aaa; text-align:center; padding:20px;">القائمة فارغة</li>';
             keys.forEach(k => {
                 const li = document.createElement('li');
                 li.className = 'cart-item';
                 li.innerHTML = `
+                    <strong style="flex:1">${k}</strong>
                     <div class="item-controls">
                         <button class="qty-btn" onclick="changeQty('${k}', 1)">+</button>
-                        <span class="qty-num">${cart[k]}</span>
+                        <span class="qty-val">${cart[k]}</span>
                         <button class="qty-btn" onclick="changeQty('${k}', -1)">-</button>
+                        <button class="btn-del" onclick="del('${k}')">حذف</button>
                     </div>
-                    <strong class="item-info">${k}</strong>
-                    <button class="btn-del" onclick="removeAll('${k}')">حذف</button>
                 `;
                 list.appendChild(li);
             });
         }
 
-        function copyIt(v) { navigator.clipboard.writeText(v).then(() => pushNotif("تم النسخ للحافظة")); }
+        function copy(v) { navigator.clipboard.writeText(v).then(() => showNotify("تم النسخ بنجاح")); }
 
 function sendOrder() {
-    const itemsInCart = Object.keys(cart);
-    if (!itemsInCart.length) return showNotify("القائمة فارغة!");
-    
+    const keys = Object.keys(cart);
+    if (!keys.length) return showNotify("القائمة فارغة.. اختر ما يسر خاطرك أولاً");
     const uName = document.getElementById('user-name').value;
-    if (!uName) return showNotify("يرجى إدخال الاسم");
+    if (!uName) return showNotify("يرجى إدخال اسمك الكريم");
 
-    // بداية نص الرسالة
-    let msg = "طلب جديد من ضيافة العزم\n";
-    msg += "الاسم: " + uName + "\n";
-    msg += "تفاصيل الطلب:\n";
+    // السطر المطلوب: ترحيب ودعاء بالعافية
+    let msg = "يا هلا بك يا " + uName + "، استلمنا طلبك بكل حب، وبالهناء والشفاء والعافية على قلبك.\n";
+    msg += "تفاصيل طلبك هي:\n";
 
-    // تصفية العناصر حسب كل قسم
-    const saltyOrder = itemsInCart.filter(k => categories.salty.includes(k));
-    const sweetOrder = itemsInCart.filter(k => categories.sweet.includes(k));
-    const drinkOrder = itemsInCart.filter(k => categories.drinks.includes(k));
+    const saltyOrder = keys.filter(k => categories.salty.includes(k));
+    const sweetOrder = keys.filter(k => categories.sweet.includes(k));
+    const drinkOrder = keys.filter(k => categories.drinks.includes(k));
 
-    // إضافة الأطباق المالحة إذا وجدت
-    if (saltyOrder.length > 0) {
-        msg += "\nالاطباق المالحة:\n";
+    // الأطباق المالحة
+    if (saltyOrder.length) {
+        msg += "\n* الأطباق المالحة:\n";
         saltyOrder.forEach((k, i) => {
-            msg += (i + 1) + ". " + k + " (العدد: " + cart[k] + ")\n";
+            msg += "  " + (i + 1) + ". " + k + " [العدد: " + cart[k] + "]\n";
         });
     }
 
-    // إضافة الأطباق الحلوة إذا وجدت
-    if (sweetOrder.length > 0) {
-        msg += "\nالاطباق الحلوة:\n";
+    // الأطباق الحلوة
+    if (sweetOrder.length) {
+        msg += "\n* الأطباق الحلوة:\n";
         sweetOrder.forEach((k, i) => {
-            msg += (i + 1) + ". " + k + " (العدد: " + cart[k] + ")\n";
+            msg += "  " + (i + 1) + ". " + k + " [العدد: " + cart[k] + "]\n";
         });
     }
 
-    // إضافة المشروبات إذا وجدت
-    if (drinkOrder.length > 0) {
-        msg += "\nالمشروبات:\n";
+    // المشروبات
+    if (drinkOrder.length) {
+        msg += "\n* المشروبات:\n";
         drinkOrder.forEach((k, i) => {
-            msg += (i + 1) + ". " + k + " (العدد: " + cart[k] + ")\n";
+            msg += "  " + (i + 1) + ". " + k + " [العدد: " + cart[k] + "]\n";
         });
     }
 
-    // خاتمة الرسالة
-    msg += "\nشكرا لكم وطاب يومكم.";
-
-    // فتح رابط الواتساب
+    // فتح الرابط بشكل سليم
     const whatsappURL = "https://wa.me/966502069445?text=" + encodeURIComponent(msg);
     window.open(whatsappURL, '_blank');
 }
 
-        // السلايدر - تم إصلاح الحركة لتظهر الصور 1، 2، 3 بالترتيب
-        let sIdx = 0;
+        let idx = 0;
         setInterval(() => {
-            sIdx = (sIdx + 1) % 3;
-            document.getElementById('main-slider').style.transform = `translateX(${sIdx * 33.333}%)`;
+            idx = (idx + 1) % 3;
+            document.getElementById('main-slider').style.transform = `translateX(${idx * 33.333}%)`;
         }, 5000);
 
         window.onscroll = () => { document.getElementById("btn-up").style.display = (window.scrollY > 400) ? "flex" : "none"; };
